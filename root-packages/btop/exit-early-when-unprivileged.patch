@@ -8,7 +8,7 @@ index 7826594..8c7e568 100644
  
 +	// Few of btop's inputs are visible to unprivileged processes on android,
 +	// and it handles those failures by quitting.
-+	if (Global::set_uid != 0) {
++	if (Global::set_uid == 5) {
 +		Global::exit_error_msg = "btop can't do anything useful on Termux without root. Quitting!";
 +		clean_quit(1);
 +	}
