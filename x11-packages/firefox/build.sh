@@ -2,14 +2,20 @@ TERMUX_PKG_HOMEPAGE=https://www.mozilla.org/firefox
 TERMUX_PKG_DESCRIPTION="Mozilla Firefox web browser"
 TERMUX_PKG_LICENSE="MPL-2.0"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="145.0.2"
-TERMUX_PKG_SRCURL=https://archive.mozilla.org/pub/firefox/releases/${TERMUX_PKG_VERSION}/source/firefox-${TERMUX_PKG_VERSION}.source.tar.xz
-TERMUX_PKG_SHA256=d7c5b4c6b5d47b51f2b548403defaf53b1072c621ee3fa11c77f86b3cf84858d
+TERMUX_PKG_VERSION="147.0.2"
+TERMUX_PKG_SRCURL="https://archive.mozilla.org/pub/firefox/releases/${TERMUX_PKG_VERSION}/source/firefox-${TERMUX_PKG_VERSION}.source.tar.xz"
+TERMUX_PKG_SHA256=689d3d34c31b317511a09d6e568250c6736138ee092ef9129c98836d11d942d9
 # ffmpeg and pulseaudio are dependencies through dlopen(3):
 TERMUX_PKG_DEPENDS="ffmpeg, fontconfig, freetype, gdk-pixbuf, glib, gtk3, libandroid-shmem, libandroid-spawn, libc++, libcairo, libevent, libffi, libice, libicu, libjpeg-turbo, libnspr, libnss, libpixman, libsm, libvpx, libwebp, libx11, libxcb, libxcomposite, libxdamage, libxext, libxfixes, libxrandr, libxtst, pango, pulseaudio, zlib"
 TERMUX_PKG_BUILD_DEPENDS="libcpufeatures, libice, libsm"
 TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_AUTO_UPDATE=true
+
+# NOTE:
+# Firefox's patches are also used by Thunderbird.
+# To avoid issues and reduce duplication the shared 00XX-${topic}.patch files
+# are symlinked by Thunderbird into x11-packages/thunderbird
+# Firefox specific patches should start at 1001-${topic}.patch
 
 termux_pkg_auto_update() {
 	# https://archive.mozilla.org/pub/firefox/releases/latest/README.txt
@@ -121,6 +127,19 @@ termux_step_make_install() {
 	./mach install
 
 	install -Dm644 -t "${TERMUX_PREFIX}/share/applications" "${TERMUX_PKG_BUILDER_DIR}/firefox.desktop"
+
+	# Install icons as Arch Linux does
+	local i theme=official
+	for i in 16 22 24 32 48 64 128 256; do
+		install -Dvm644 "browser/branding/$theme/default$i.png" \
+			"$TERMUX_PREFIX/share/icons/hicolor/${i}x${i}/apps/$TERMUX_PKG_NAME.png"
+	done
+	install -Dvm644 "browser/branding/$theme/content/about-logo.png" \
+		"$TERMUX_PREFIX/share/icons/hicolor/192x192/apps/$TERMUX_PKG_NAME.png"
+	install -Dvm644 "browser/branding/$theme/content/about-logo@2x.png" \
+		"$TERMUX_PREFIX/share/icons/hicolor/384x384/apps/$TERMUX_PKG_NAME.png"
+	install -Dvm644 "browser/branding/$theme/content/about-logo.svg" \
+		"$TERMUX_PREFIX/share/icons/hicolor/scalable/apps/$TERMUX_PKG_NAME.svg"
 }
 
 termux_step_post_make_install() {

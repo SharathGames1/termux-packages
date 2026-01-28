@@ -2,9 +2,9 @@ TERMUX_PKG_HOMEPAGE=https://oxc.rs/
 TERMUX_PKG_DESCRIPTION="Oxc JavaScript linter"
 TERMUX_PKG_LICENSE="MIT"
 TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="1.30.0"
+TERMUX_PKG_VERSION="1.42.0"
 TERMUX_PKG_SRCURL="https://github.com/oxc-project/oxc/archive/refs/tags/oxlint_v$TERMUX_PKG_VERSION.tar.gz"
-TERMUX_PKG_SHA256=f8b71d29db1ddfa78083d4f537c93adafd23e3a0879c49b9baf45f76fe7b608e
+TERMUX_PKG_SHA256=c394a3b0b2226e11b8b4af1829c441948cc56681d895255cc8ce29a6752849af
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_BUILD_IN_SRC=true
 
@@ -70,5 +70,4 @@ termux_step_make() {
 termux_step_make_install() {
 	install -Dm700 -t "$TERMUX_PREFIX/bin" "target/$CARGO_TARGET_NAME/release/oxlint"
 	install -Dm700 -t "$TERMUX_PREFIX/bin" "target/$CARGO_TARGET_NAME/release/oxfmt"
-	install -Dm700 -t "$TERMUX_PREFIX/bin" "target/$CARGO_TARGET_NAME/release/oxc_language_server"
 }
