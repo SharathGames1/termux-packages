@@ -31,6 +31,7 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -Dgallium-rusticl=true
 -Dglvnd=enabled
 -Dxmlconfig=disabled
+-Dspirv-cross-vtn=disabled
 "
 
 termux_step_post_get_source() {
