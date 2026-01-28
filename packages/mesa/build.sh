@@ -81,6 +81,7 @@ termux_step_pre_configure() {
 	fi
 	if [ $TERMUX_ARCH= "x86_64"]; then
 	    _vk_drivers+=",anv"
+	fi
 	TERMUX_PKG_EXTRA_CONFIGURE_ARGS+=" -Dvulkan-drivers=$_vk_drivers"
 }
 
